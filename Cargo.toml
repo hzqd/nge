@@ -1,0 +1,10 @@
+[package]
+name = "nge"
+version = "0.0.0"
+edition = "2021"
+license = "MIT"
+description = "The number of great expansion (大衍之數)"
+
+[dependencies]
+rand = "0.8.5"
+aoko = "0.3.0-alpha.28"
