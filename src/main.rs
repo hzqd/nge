@@ -1,4 +1,3 @@
-use aoko::no_std::pipelines::tap::Tap;
 use rand::{thread_rng, Rng};
 macro_rules! calc {
     ($key:ident) => {
@@ -30,12 +29,12 @@ fn 轮<'a>() -> (&'a str, &'a str) {
     // 三遍成爻（第二遍）
     let 余 = 用 - 手;
     let 左 = 易.gen_range(1..余);
-    let 右 = 用 - 左 - 1;
+    let 右 = 余 - 左 - 1;
     let 手 = 手 + 1 + calc!(左) + calc!(右);
     //（第三遍）
     let 余 = 用 - 手;
     let 左 = 易.gen_range(1..余);
-    let 右 = 用 - 左 - 1;
+    let 右 = 余 - 左 - 1;
     match (用 - (手 + 1 + calc!(左) + calc!(右))) / 4 {
         6 /* 老阴 */ => ("阴", "阳"),
         7 /* 少阳 */ => ("阳", "阳"),
@@ -44,9 +43,8 @@ fn 轮<'a>() -> (&'a str, &'a str) {
         _ => panic!("internal error")
     }
 }
-
 fn main() {
-    let 卦 = (1..=6).fold(Vec::new(),|acc,_| acc.tap_mut(|v| v.push(轮())));
+    let 卦: Vec<_> = (1..=6).map(|_| 轮()).collect();
     println!("本:   变:");
     卦.into_iter().rev().for_each(|(爻, 变)| println!("{爻}    {变}"));
 }
